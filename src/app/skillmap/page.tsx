@@ -1,6 +1,9 @@
 import { createClient } from "@/lib/supabase-server";
 import Topbar from "@/components/Topbar";
 
+export const dynamic = 'force-dynamic';
+
+
 export default async function SkillMapPage() {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();

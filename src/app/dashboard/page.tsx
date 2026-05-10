@@ -2,6 +2,9 @@ import { createClient } from "@/lib/supabase-server";
 import Topbar from "@/components/Topbar";
 import Link from "next/link";
 
+export const dynamic = 'force-dynamic';
+
+
 export default async function DashboardPage() {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
