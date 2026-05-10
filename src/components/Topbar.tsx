@@ -41,7 +41,7 @@ export default function Topbar({ profile }: { profile: any }) {
               key={item.href}
               href={item.href}
               className={`px-3 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition ${
-                pathname === item.href || pathname.startsWith(item.href + "/") ? "bg-white text-primary" : "hover:bg-white/20"
+                pathname === item.href || pathname?.startsWith(item.href + "/") ? "bg-white text-primary" : "hover:bg-white/20"
               }`}
             >
               <span className="mr-1">{item.icon}</span>

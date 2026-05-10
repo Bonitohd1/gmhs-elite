@@ -77,7 +77,7 @@ export default function ProfilePage() {
             <div>
               <h2 className="text-xl font-bold">{profile.display_name}</h2>
               <div className="text-sm text-slate-600 mt-1">
-                {{ secondary: "Trung cấp", college: "Cao đẳng", university: "Đại học", "university+": "Đại học + Chuyên khoa" }[profile.level as string]}
+                {({secondary: "Trung cấp", college: "Cao đẳng", university: "Đại học", "university+": "Đại học + Chuyên khoa"} as Record<string, string>)[profile.level]}
               </div>
             </div>
           </div>
