@@ -209,3 +209,41 @@ git push
 ---
 
 *Khi nào kẹt, paste lỗi cho tôi → fix ngay.*
+
+---
+
+## 🆕 UPDATE 10/05/2026 — Phiên bản đầy đủ 36 trang
+
+Bản này thêm:
+- 🏆 Vinh danh (Hall of Fame podium + 20 Badges + 10 Levels + Gala countdown)
+- 🤖 AI Assistant chat với 6 câu gợi ý
+- 💬 Forum (peer Q&A)
+- 🎓 Mentor Program  
+- 👥 Cohort/Class
+- 📊 Surveys (NPS)
+- 📣 Announcements (broadcast)
+- 🧠 AI Insights (phân tích lỗi sai)
+- 🛍️ Coins Shop (8 items)
+- ⭐ Bookmarks + Activity Feed
+- 📅 Calendar lịch sự kiện
+- ❓ Help & FAQ (4 nhóm)
+- 🔐 Admin (10 trang): Dashboard, Personnel, Questions, Reports, Compliance, Audit, Roadmap, Q-Gen, Announcements, Anti-cheat, NPS
+
+### Cần chạy thêm SQL trong Supabase
+
+Sau khi pull code mới, chạy thêm 2 SQL files:
+
+**File 5: `supabase/migrations/003_vinhdanh.sql`** — Tạo bảng badges, levels, user_badges
+
+**File 6: `supabase/seed_vinhdanh.sql`** — Seed 10 levels + 20 badges
+
+Cách chạy: SQL Editor → +New query → paste → Run.
+
+### Push code lên GitHub
+```bash
+git add .
+git commit -m "Add 33 features: Vinhdanh, AI, Forum, Mentor, Cohort, Admin..."
+git push
+```
+
+→ Vercel auto-deploy 2-3 phút.

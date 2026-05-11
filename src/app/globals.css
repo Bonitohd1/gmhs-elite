@@ -6,8 +6,6 @@
   --primary: #0F766E;
   --primary-light: #CCFBF1;
   --accent: #F59E0B;
-  --success: #10B981;
-  --danger: #DC2626;
   --bg: #FAFCFF;
   --card: #FFFFFF;
   --border: #E2E8F0;
@@ -37,22 +35,12 @@ body {
 }
 
 /* Dark mode */
-body.dark {
-  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-  color: #F1F5F9;
-}
-body.dark .card {
-  background: #1E293B;
-  border-color: #334155;
-  color: #F1F5F9;
-}
-body.dark .input {
-  background: #334155;
-  color: #F1F5F9;
-  border-color: #475569;
-}
-body.dark .btn-ghost {
-  background: #1E293B;
-  color: #5EEAD4;
-  border-color: #475569;
-}
+body.dark { background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); color: #F1F5F9; }
+body.dark .card { background: #1E293B; border-color: #334155; color: #F1F5F9; }
+body.dark .input { background: #334155; color: #F1F5F9; border-color: #475569; }
+body.dark .btn-ghost { background: #1E293B; color: #5EEAD4; border-color: #475569; }
+body.dark .bg-slate-50 { background: #334155 !important; }
+body.dark .bg-slate-100 { background: #475569 !important; }
+body.dark .text-slate-500, body.dark .text-slate-600 { color: #94A3B8 !important; }
+body.dark .text-slate-700 { color: #CBD5E1 !important; }
+body.dark .border-slate-200, body.dark .border-slate-300 { border-color: #475569 !important; }

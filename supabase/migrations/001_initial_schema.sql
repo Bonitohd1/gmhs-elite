@@ -126,22 +126,36 @@ CREATE POLICY "Public read documents" ON documents FOR SELECT USING (true);
 -- =================================================================
 -- TRIGGERS — Tự động tạo profile khi user đăng ký
 -- =================================================================
-CREATE OR REPLACE FUNCTION handle_new_user()
-RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
 BEGIN
-  INSERT INTO profiles (id, display_name, level)
+  INSERT INTO public.profiles (id, display_name, level)
   VALUES (
     NEW.id,
     COALESCE(NEW.raw_user_meta_data->>'display_name', split_part(NEW.email, '@', 1)),
     COALESCE(NEW.raw_user_meta_data->>'level', 'college')
-  );
+  )
+  ON CONFLICT (id) DO NOTHING;
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$$;
 
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
-  FOR EACH ROW EXECUTE FUNCTION handle_new_user();
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- Grant permissions cho Supabase auth admin để trigger work
+GRANT USAGE ON SCHEMA public TO supabase_auth_admin;
+GRANT INSERT, SELECT ON public.profiles TO supabase_auth_admin;
+
+-- Policy cho service role bypass RLS
+CREATE POLICY "Service role full access" ON public.profiles
+  FOR ALL TO supabase_auth_admin, service_role
+  USING (true) WITH CHECK (true);
 
 -- =================================================================
 -- HELPER FUNCTIONS
