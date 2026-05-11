@@ -127,7 +127,7 @@ export default function DailyPage() {
     return (
       <div className="min-h-screen">
         <Topbar profile={profile} />
-        <main className="max-w-2xl mx-auto p-4 sm:p-8">
+        <main className="lg:ml-60 p-4 sm:p-8">
           <div className="card text-center">
             <div className="text-6xl mb-4">✓</div>
             <h1 className="text-2xl font-bold mb-2">Hoàn thành Daily hôm nay rồi!</h1>
@@ -144,7 +144,7 @@ export default function DailyPage() {
     return (
       <div className="min-h-screen">
         <Topbar profile={profile} />
-        <main className="max-w-2xl mx-auto p-4 sm:p-8">
+        <main className="lg:ml-60 p-4 sm:p-8">
           <div className="card text-center">
             <div className="text-6xl mb-4">{score >= 80 ? "🎉" : score >= 60 ? "💪" : "📚"}</div>
             <h1 className="text-2xl font-bold mb-2">{score >= 80 ? "Xuất sắc!" : score >= 60 ? "Khá tốt!" : "Cần ôn lại"}</h1>
@@ -174,7 +174,7 @@ export default function DailyPage() {
     return (
       <div className="min-h-screen">
         <Topbar profile={profile} />
-        <main className="max-w-2xl mx-auto p-4 sm:p-8">
+        <main className="lg:ml-60 p-4 sm:p-8">
           <div className="card text-center">
             <p>Không có câu hỏi. Vui lòng liên hệ admin.</p>
           </div>
@@ -198,7 +198,7 @@ export default function DailyPage() {
   return (
     <div className="min-h-screen">
       <Topbar profile={profile} />
-      <main className="max-w-2xl mx-auto p-4 sm:p-8">
+      <main className="lg:ml-60 p-4 sm:p-8">
         {/* Progress */}
         <div className="flex justify-between items-center mb-3 text-sm">
           <span className="font-semibold">Câu {currentIdx + 1}/{questions.length}</span>

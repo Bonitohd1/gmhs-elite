@@ -1,98 +1,83 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
-
-const NAV_PRIMARY = [
-  { href: "/dashboard", icon: "🏠", label: "Tổng quan" },
-  { href: "/daily", icon: "🎯", label: "Daily" },
-  { href: "/weekly", icon: "📝", label: "Weekly" },
-  { href: "/scenarios", icon: "🏥", label: "Tình huống" },
-  { href: "/skillmap", icon: "🗺️", label: "Skill Map" },
-  { href: "/library", icon: "📚", label: "Thư viện" },
-];
-
-const NAV_SECONDARY = [
-  { href: "/vinhdanh", icon: "🏆", label: "Vinh danh" },
-  { href: "/ai", icon: "🤖", label: "AI" },
-  { href: "/forum", icon: "💬", label: "Diễn đàn" },
-  { href: "/announcements", icon: "📣", label: "Thông báo" },
-  { href: "/insights", icon: "🧠", label: "AI Insights" },
-  { href: "/cohorts", icon: "👥", label: "Lớp học" },
-  { href: "/mentor", icon: "🎓", label: "Mentor" },
-  { href: "/calendar", icon: "📅", label: "Lịch" },
-  { href: "/surveys", icon: "📊", label: "Khảo sát" },
-  { href: "/bookmarks", icon: "⭐", label: "Yêu thích" },
-  { href: "/shop", icon: "🛍️", label: "Cửa hàng" },
-  { href: "/profile", icon: "👤", label: "Hồ sơ" },
-  { href: "/settings", icon: "⚙️", label: "Cài đặt" },
-  { href: "/help", icon: "❓", label: "Trợ giúp" },
-  { href: "/admin", icon: "🔐", label: "Admin" },
-];
+import Sidebar from "./Sidebar";
 
 export default function Topbar({ profile }: { profile: any }) {
   const router = useRouter();
-  const pathname = usePathname();
   const supabase = createClient();
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [moreOpen, setMoreOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
-  async function logout() { await supabase.auth.signOut(); router.push("/auth/login"); router.refresh(); }
+  async function logout() {
+    await supabase.auth.signOut();
+    router.push("/auth/login");
+    router.refresh();
+  }
+
+  // Compute level + progress
+  const xp = profile?.total_xp || 0;
+  const levelMap = [
+    { id: 1, name: "Tân binh", min: 0, max: 500, color: "#94A3B8" },
+    { id: 2, name: "Học việc", min: 500, max: 1200, color: "#60A5FA" },
+    { id: 3, name: "Thực tập sinh", min: 1200, max: 2200, color: "#34D399" },
+    { id: 4, name: "Điều dưỡng viên", min: 2200, max: 3500, color: "#10B981" },
+    { id: 5, name: "Kỳ cựu", min: 3500, max: 5000, color: "#0EA5E9" },
+    { id: 6, name: "Chuyên gia", min: 5000, max: 7000, color: "#F59E0B" },
+    { id: 7, name: "Bậc thầy", min: 7000, max: 9500, color: "#EAB308" },
+    { id: 8, name: "Tinh anh", min: 9500, max: 12500, color: "#A855F7" },
+    { id: 9, name: "Đại sư", min: 12500, max: 16000, color: "#EC4899" },
+    { id: 10, name: "Huyền thoại GMHS", min: 16000, max: 99999, color: "#DC2626" },
+  ];
+  const level = [...levelMap].reverse().find((l) => xp >= l.min) || levelMap[0];
+  const inLevelXp = xp - level.min;
+  const needLevelXp = level.max - level.min;
+  const pct = needLevelXp > 0 ? Math.min(100, Math.round((inLevelXp / needLevelXp) * 100)) : 100;
 
   return (
-    <header className="bg-gradient-to-r from-primary to-cyan-500 text-white shadow-lg sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-3 py-3 flex items-center gap-3">
-        <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden bg-white/15 hover:bg-white/25 w-9 h-9 rounded-lg grid place-items-center text-lg">☰</button>
-        <Link href="/dashboard" className="flex items-center gap-2 font-bold text-lg flex-shrink-0">
-          <span className="bg-white text-primary w-8 h-8 rounded-lg grid place-items-center font-black">G</span>
-          <span className="hidden sm:inline">GMHS Elite</span>
-        </Link>
-        <nav className="flex-1 hidden lg:flex gap-1 overflow-x-auto">
-          {NAV_PRIMARY.map((item) => {
-            const active = pathname === item.href || pathname?.startsWith(item.href + "/");
-            return (
-              <Link key={item.href} href={item.href}
-                className={`px-3 py-2 rounded-lg text-sm font-semibold whitespace-nowrap transition ${active ? "bg-white text-primary" : "hover:bg-white/20"}`}>
-                <span className="mr-1">{item.icon}</span>
-                <span className="hidden xl:inline">{item.label}</span>
-              </Link>
-            );
-          })}
-          <div className="relative">
-            <button onClick={() => setMoreOpen(!moreOpen)} className="px-3 py-2 rounded-lg text-sm font-semibold hover:bg-white/20">⋯ Khác</button>
-            {moreOpen && (
-              <div className="absolute right-0 top-full mt-1 bg-white text-slate-800 rounded-xl shadow-2xl p-2 min-w-[220px] z-50">
-                {NAV_SECONDARY.map((item) => (
-                  <Link key={item.href} href={item.href} onClick={() => setMoreOpen(false)}
-                    className={`block px-3 py-2 rounded text-sm hover:bg-slate-100 ${pathname === item.href ? "bg-primary-50 text-primary font-bold" : ""}`}>
-                    {item.icon} {item.label}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        </nav>
-        <div className="flex items-center gap-2 text-sm flex-shrink-0">
-          <span className="bg-white/20 px-2 py-1 rounded text-xs hidden md:inline">XP: {profile?.total_xp || 0}</span>
-          <span className="bg-orange-500 px-2 py-1 rounded text-xs">🔥 {profile?.streak || 0}</span>
-          <Link href="/profile" className="bg-white/20 hover:bg-white/30 w-9 h-9 rounded-full grid place-items-center text-xs font-bold">
-            {profile?.display_name?.split(" ").slice(-2).map((n: string) => n[0]).join("") || "?"}
+    <>
+      <header className="bg-gradient-to-r from-primary to-cyan-500 text-white shadow-lg sticky top-0 z-40 h-14">
+        <div className="h-full px-3 flex items-center gap-3">
+          {/* Mobile hamburger */}
+          <button onClick={() => setMobileNavOpen(true)} className="lg:hidden bg-white/15 hover:bg-white/25 w-9 h-9 rounded-lg grid place-items-center text-lg flex-shrink-0">☰</button>
+
+          {/* Logo */}
+          <Link href="/dashboard" className="flex items-center gap-2 font-bold flex-shrink-0 lg:w-56">
+            <span className="bg-white text-primary w-8 h-8 rounded-lg grid place-items-center font-black">G</span>
+            <span className="hidden sm:inline">GMHS Elite 2026</span>
           </Link>
-          <button onClick={logout} className="bg-white/20 hover:bg-white/30 px-2 py-1 rounded text-xs hidden sm:inline">Đăng xuất</button>
-        </div>
-      </div>
-      {menuOpen && (
-        <nav className="lg:hidden bg-white/10 backdrop-blur border-t border-white/20 px-3 py-2 grid grid-cols-2 gap-1 max-h-[60vh] overflow-y-auto">
-          {[...NAV_PRIMARY, ...NAV_SECONDARY].map((item) => (
-            <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)}
-              className={`px-3 py-2 rounded-lg text-sm font-semibold ${pathname === item.href ? "bg-white text-primary" : "hover:bg-white/20"}`}>
-              {item.icon} {item.label}
+
+          {/* Level + XP bar (desktop) */}
+          <div className="hidden md:flex items-center gap-3 flex-1 max-w-md">
+            <span className="text-xs bg-white/20 px-2 py-1 rounded-full font-semibold whitespace-nowrap">
+              {level.id <= 5 ? "🌱" : level.id <= 7 ? "🎯" : level.id <= 9 ? "💎" : "⚡"} Lv {level.id} · {level.name}
+            </span>
+            <div className="flex-1 bg-white/20 rounded-full h-2 relative overflow-hidden min-w-[80px]">
+              <div className="absolute top-0 left-0 h-full bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full" style={{ width: `${pct}%` }} />
+            </div>
+            <span className="text-xs whitespace-nowrap font-mono">{xp.toLocaleString("vi-VN")} / {level.max.toLocaleString("vi-VN")} XP</span>
+          </div>
+
+          {/* Spacer */}
+          <div className="flex-1 md:hidden" />
+
+          {/* Streak + Avatar */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <span className="bg-orange-500 px-2 py-1 rounded-full text-xs font-bold">🔥 {profile?.streak || 0}</span>
+            <button className="hidden sm:block hover:bg-white/15 w-9 h-9 rounded-lg" title="Thông báo">🔔</button>
+            <Link href="/profile" className="bg-white/20 hover:bg-white/30 w-9 h-9 rounded-full grid place-items-center text-xs font-bold flex-shrink-0">
+              {profile?.display_name?.split(" ").slice(-2).map((n: string) => n[0]).join("") || "?"}
             </Link>
-          ))}
-        </nav>
-      )}
-    </header>
+            <span className="hidden md:inline text-sm font-semibold">{profile?.display_name}</span>
+            <button onClick={logout} className="bg-white/20 hover:bg-white/30 px-2 py-1 rounded text-xs hidden sm:inline">Đăng xuất</button>
+          </div>
+        </div>
+      </header>
+
+      {/* Sidebar */}
+      <Sidebar mobileOpen={mobileNavOpen} onClose={() => setMobileNavOpen(false)} />
+    </>
   );
 }

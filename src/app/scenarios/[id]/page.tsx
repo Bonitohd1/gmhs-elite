@@ -95,7 +95,7 @@ export default function ScenarioPlayer() {
     return (
       <div className="min-h-screen">
         <Topbar profile={profile} />
-        <main className="max-w-3xl mx-auto p-4 sm:p-8">
+        <main className="lg:ml-60 p-4 sm:p-8">
           <div className="card text-center">
             <div className="text-6xl mb-4">{points >= 40 ? "🎉" : points >= 20 ? "💪" : points >= 0 ? "📚" : "⚠"}</div>
             <h1 className="text-2xl font-bold mb-2">{ending?.title || "Hoàn thành"}</h1>
@@ -131,7 +131,7 @@ export default function ScenarioPlayer() {
   return (
     <div className="min-h-screen">
       <Topbar profile={profile} />
-      <main className="max-w-3xl mx-auto p-4 sm:p-8">
+      <main className="lg:ml-60 p-4 sm:p-8">
         <div className="flex justify-between items-center mb-4">
           <Link href="/scenarios" className="btn-ghost text-sm">← Thoát</Link>
           <div className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-1 rounded-full text-sm font-bold">

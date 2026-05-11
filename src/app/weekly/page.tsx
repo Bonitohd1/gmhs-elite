@@ -126,7 +126,7 @@ export default function WeeklyPage() {
     return (
       <div className="min-h-screen">
         <Topbar profile={profile} />
-        <main className="max-w-2xl mx-auto p-4 sm:p-8">
+        <main className="lg:ml-60 p-4 sm:p-8">
           <div className="card text-center">
             <div className="text-5xl mb-4">📝</div>
             <h1 className="text-2xl font-bold mb-2">Đã hoàn thành Weekly tuần này</h1>
@@ -145,7 +145,7 @@ export default function WeeklyPage() {
     return (
       <div className="min-h-screen">
         <Topbar profile={profile} />
-        <main className="max-w-2xl mx-auto p-4 sm:p-8">
+        <main className="lg:ml-60 p-4 sm:p-8">
           <div className="card text-center">
             <div className="text-6xl mb-4">{score >= 80 ? "🥇" : score >= 60 ? "🥈" : "🥉"}</div>
             <h1 className="text-2xl font-bold mb-2">Hoàn thành Weekly!</h1>
@@ -174,7 +174,7 @@ export default function WeeklyPage() {
     return (
       <div className="min-h-screen">
         <Topbar profile={profile} />
-        <main className="max-w-2xl mx-auto p-4 sm:p-8">
+        <main className="lg:ml-60 p-4 sm:p-8">
           <div className="card text-center">
             <div className="text-5xl mb-4">📝</div>
             <h1 className="text-2xl font-bold mb-2">Weekly Mini-test</h1>
@@ -210,7 +210,7 @@ export default function WeeklyPage() {
   return (
     <div className="min-h-screen">
       <Topbar profile={profile} />
-      <main className="max-w-2xl mx-auto p-4 sm:p-8">
+      <main className="lg:ml-60 p-4 sm:p-8">
         <div className="flex justify-between items-center mb-3 text-sm">
           <span className="font-semibold">Câu {currentIdx + 1}/{questions.length}</span>
           <span className={`px-3 py-1 rounded-full font-bold font-mono ${timerCls}`}>⏱ {minutes}:{String(seconds).padStart(2, "0")}</span>

@@ -56,7 +56,7 @@ export default async function SkillMapPage() {
   return (
     <div className="min-h-screen">
       <Topbar profile={profile} />
-      <main className="max-w-7xl mx-auto p-4 sm:p-6">
+      <main className="lg:ml-60 p-4 sm:p-6 lg:p-8">
         <div className="mb-6">
           <h1 className="text-2xl font-bold mb-1">🗺️ Skill Map — Bản đồ năng lực</h1>
           <p className="text-slate-600">6 trụ năng lực × 27 kỹ năng. AI gợi ý lộ trình ôn luyện cá nhân hoá theo TT32.</p>

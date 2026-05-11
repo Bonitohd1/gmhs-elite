@@ -27,7 +27,7 @@ export default function AnnouncementsPage() {
   return (
     <div className="min-h-screen">
       <Topbar profile={profile} />
-      <main className="max-w-4xl mx-auto p-4 sm:p-6">
+      <main className="lg:ml-60 p-4 sm:p-6 lg:p-8">
         <div className="mb-6">
           <h1 className="text-2xl font-bold mb-1">📣 Thông báo khoa GMHS</h1>
           <p className="text-slate-600">Cập nhật từ lãnh đạo khoa, sự kiện, lịch trực, thay đổi quy trình.</p>

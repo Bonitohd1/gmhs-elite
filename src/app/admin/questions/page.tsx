@@ -13,7 +13,7 @@ export default async function AdminQuestionsPage() {
   return (
     <div className="min-h-screen">
       <Topbar profile={profile} />
-      <main className="max-w-7xl mx-auto p-4 sm:p-6">
+      <main className="lg:ml-60 p-4 sm:p-6 lg:p-8">
         <Link href="/admin" className="btn-ghost text-sm mb-4 inline-block">← Admin</Link>
         <div className="flex justify-between items-center mb-6 flex-wrap gap-3">
           <h1 className="text-2xl font-bold">📝 Ngân hàng câu hỏi</h1>
