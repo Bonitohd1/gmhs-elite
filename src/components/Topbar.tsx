@@ -93,7 +93,7 @@ export default function Topbar({ profile }: { profile: any }) {
           </Link>
 
           {/* Level + XP bar (desktop) */}
-          <div className="hidden md:flex items-center gap-3 flex-1 max-w-md">
+          <div className="hidden md:flex items-center gap-3 max-w-md flex-shrink min-w-0">
             <span className="text-xs bg-white/20 px-2 py-1 rounded-full font-semibold whitespace-nowrap">
               {level.id <= 5 ? "🌱" : level.id <= 7 ? "🎯" : level.id <= 9 ? "💎" : "⚡"} Lv {level.id} · {level.name}
             </span>
@@ -103,13 +103,59 @@ export default function Topbar({ profile }: { profile: any }) {
             <span className="text-xs whitespace-nowrap font-mono">{xp.toLocaleString("vi-VN")} / {level.max.toLocaleString("vi-VN")} XP</span>
           </div>
 
-          {/* Spacer */}
-          <div className="flex-1 md:hidden" />
-
-          {/* Streak + Avatar */}
-          <div className="flex items-center gap-2 flex-shrink-0">
+          {/* Streak + Avatar — pushed to far right */}
+          <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
             <span className="bg-orange-500 px-2 py-1 rounded-full text-xs font-bold">🔥 {profile?.streak || 0}</span>
-            <button className="hidden sm:block hover:bg-white/15 w-9 h-9 rounded-lg" title="Thông báo">🔔</button>
+            <div ref={notifRef} className="relative hidden sm:block">
+              <button onClick={() => setNotifOpen(!notifOpen)} className="relative hover:bg-white/15 w-9 h-9 rounded-lg" title="Thông báo">
+                🔔
+                {unreadCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full min-w-[18px] h-[18px] grid place-items-center px-1">
+                    {unreadCount > 9 ? "9+" : unreadCount}
+                  </span>
+                )}
+              </button>
+              {notifOpen && (
+                <div className="absolute right-0 mt-2 w-80 bg-white text-slate-900 rounded-xl shadow-2xl border border-slate-200 max-h-96 overflow-hidden flex flex-col z-50">
+                  <div className="flex justify-between items-center p-3 border-b border-slate-200">
+                    <h4 className="font-bold text-sm">Thông báo</h4>
+                    {unreadCount > 0 && (
+                      <button onClick={markAllRead} className="text-xs text-blue-600 hover:underline">Đánh dấu đã đọc tất cả</button>
+                    )}
+                  </div>
+                  <div className="overflow-y-auto flex-1">
+                    {notifs.length === 0 ? (
+                      <div className="p-6 text-center text-sm text-slate-500">
+                        <div className="text-3xl mb-2">📭</div>
+                        Không có thông báo
+                      </div>
+                    ) : (
+                      notifs.map((n) => (
+                        <a
+                          key={n.id}
+                          href={n.link || "#"}
+                          onClick={(e) => {
+                            if (!n.link) e.preventDefault();
+                            markRead(n.id);
+                          }}
+                          className={`block p-3 border-b border-slate-100 hover:bg-slate-50 ${!n.is_read ? "bg-blue-50" : ""}`}
+                        >
+                          <div className="flex gap-2 items-start">
+                            <span className="text-xl flex-shrink-0">{n.icon || "🔔"}</span>
+                            <div className="flex-1 min-w-0">
+                              <div className={`text-sm ${!n.is_read ? "font-semibold" : ""} text-slate-900`}>{n.title}</div>
+                              {n.body && <div className="text-xs text-slate-600 mt-0.5 line-clamp-2">{n.body}</div>}
+                              <div className="text-[10px] text-slate-400 mt-1">{new Date(n.created_at).toLocaleString("vi-VN")}</div>
+                            </div>
+                            {!n.is_read && <span className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-1.5"></span>}
+                          </div>
+                        </a>
+                      ))
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
             <Link href="/profile" className="bg-white/20 hover:bg-white/30 w-9 h-9 rounded-full grid place-items-center text-xs font-bold flex-shrink-0 overflow-hidden">
               {profile?.avatar_url ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
