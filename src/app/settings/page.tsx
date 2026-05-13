@@ -106,13 +106,9 @@ export default function SettingsPage() {
         <div className="card mb-4">
           <h3 className="font-bold mb-4">🔧 Tài khoản</h3>
           <button onClick={changePassword} className="btn-ghost block w-full text-center mb-2">🔑 Đổi mật khẩu</button>
-          <button onClick={logout} className="btn-ghost block w-full text-center">→ Đăng xuất</button>
-        </div>
-
-        <div className="card text-center text-xs text-slate-500">
-          GMHS Elite 2026 v1.0 • Tool ôn luyện nội bộ khoa GMHS
-        </div>
-      </main>
-    </div>
-  );
-}
+          <button
+            onClick={() => {
+              if (typeof window === "undefined") return;
+              const keys = Object.keys(localStorage).filter((k) => k.startsWith("gmhs_onboarded_"));
+              keys.forEach((k) => localStorage.removeItem(k));
+              alert("Tour sẽ hiện lại

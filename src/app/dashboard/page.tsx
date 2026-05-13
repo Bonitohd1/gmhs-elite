@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase-server";
 import Topbar from "@/components/Topbar";
+import OnboardingTour from "@/components/OnboardingTour";
 import Link from "next/link";
 
 export const dynamic = 'force-dynamic';
@@ -58,6 +59,7 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen">
       <Topbar profile={profile} />
+      <OnboardingTour userId={user!.id} />
       <main className="lg:ml-60 p-4 sm:p-6 lg:p-8">
 
         {/* Hero Card */}
@@ -190,11 +192,4 @@ export default async function DashboardPage() {
               <div className="w-3 h-3 bg-green-300 rounded-sm"></div>
               <div className="w-3 h-3 bg-green-500 rounded-sm"></div>
               <div className="w-3 h-3 bg-green-700 rounded-sm"></div>
-              <span>Nhiều</span>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-  );
-}
+              <sp
