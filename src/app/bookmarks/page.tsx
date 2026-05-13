@@ -8,26 +8,22 @@ import { createClient } from "@/lib/supabase";
 import Topbar from "@/components/Topbar";
 import EmptyState from "@/components/EmptyState";
 
-const ACTIVITY_FEED = [
-  { time: "5 phút trước", icon: "🏆", user: "Trần Văn Minh", action: "vừa hoàn thành Monthly Big-test với 92%" },
-  { time: "12 phút trước", icon: "🎓", user: "Lê Thị Mai", action: "hoàn thành khoá Truyền máu & xử trí tai biến" },
-  { time: "30 phút trước", icon: "🏅", user: "Phạm Quốc Khánh", action: "đạt huy hiệu Truyền máu chuyên gia" },
-  { time: "1 giờ trước", icon: "⬆️", user: "Nguyễn Thị Hà", action: "lên Cấp độ 5 - Kỳ cựu" },
-  { time: "2 giờ trước", icon: "🔥", user: "Đỗ Thị Huyền", action: "đạt streak 50 ngày liên tục" },
-  { time: "3 giờ trước", icon: "🏥", user: "Hoàng Thị Lan", action: "hoàn thành Phản ứng truyền máu cấp với 60 điểm" },
-  { time: "5 giờ trước", icon: "🎯", user: "Vũ Đình Hùng", action: "hoàn thành 5 Daily liên tiếp" },
-  { time: "hôm qua", icon: "🤝", user: "Bùi Văn Quang", action: "được kết nối với mentor Trần Văn Minh" },
-];
+
 
 export default function BookmarksPage() {
   const supabase = createClient();
   const [profile, setProfile] = useState<any>(null);
   const [bookmarks, setBookmarks] = useState<{ courses: string[]; questions: string[]; docs: string[] }>({ courses: [], questions: [], docs: [] });
+  const [activities, setActivities] = useState<any[]>([]);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {
       if (!user) return;
       supabase.from("profiles").select("*").eq("id", user.id).single().then(({ data }) => setProfile(data));
+    });
+    // Fetch activity feed from view
+    supabase.from("activity_feed_view").select("*").limit(20).then(({ data }) => {
+      setActivities(data || []);
     });
     const sav = localStorage.getItem("gmhs_bookmarks");
     if (sav) setBookmarks(JSON.parse(sav));
@@ -70,15 +66,23 @@ export default function BookmarksPage() {
               <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs animate-pulse">● Live</span>
             </div>
             <div className="space-y-3 max-h-[480px] overflow-y-auto">
-              {ACTIVITY_FEED.map((a, i) => (
-                <div key={i} className="flex items-start gap-3 py-2 border-b border-slate-200 last:border-0">
-                  <span className="text-2xl">{a.icon}</span>
-                  <div className="flex-1 text-sm">
-                    <div className="leading-relaxed"><b>{a.user}</b> {a.action}</div>
-                    <div className="text-xs text-slate-500 mt-1">🕐 {a.time}</div>
-                  </div>
+              {activities.length === 0 ? (
+                <div className="text-center py-8 text-slate-500">
+                  <div className="text-3xl mb-2">📡</div>
+                  <p className="text-sm">Chưa có hoạt động.</p>
+                  <p className="text-xs mt-1">Khi ai đó hoàn thành Daily, hoạt động sẽ xuất hiện ở đây.</p>
                 </div>
-              ))}
+              ) : (
+                activities.map((a) => (
+                  <div key={a.id} className="flex items-start gap-3 py-2 border-b border-slate-200 last:border-0">
+                    <span className="text-2xl flex-shrink-0">{a.icon}</span>
+                    <div className="flex-1 text-sm min-w-0">
+                      <div className="leading-relaxed"><b>{a.user_name}</b> {a.detail}</div>
+                      <div className="text-xs text-slate-500 mt-1">🕐 {new Date(a.created_at).toLocaleString("vi-VN", { dateStyle: "short", timeStyle: "short" })}</div>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
