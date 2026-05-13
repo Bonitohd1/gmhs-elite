@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import Topbar from "@/components/Topbar";
+import AvatarUpload from "@/components/AvatarUpload";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -73,9 +74,13 @@ export default function ProfilePage() {
         {/* Hero */}
         <div className="card bg-gradient-to-r from-primary-50 to-cyan-50 mb-6">
           <div className="flex items-center gap-4">
-            <div className="w-20 h-20 rounded-full bg-primary text-white grid place-items-center font-bold text-2xl">
-              {profile.display_name?.split(" ").slice(-2).map((n: string) => n[0]).join("")}
-            </div>
+            <AvatarUpload
+              userId={profile.id}
+              displayName={profile.display_name}
+              currentUrl={profile.avatar_url}
+              size={80}
+              onUploaded={(url) => setProfile({ ...profile, avatar_url: url })}
+            />
             <div>
               <h2 className="text-xl font-bold">{profile.display_name}</h2>
               <div className="text-sm text-slate-600 mt-1">

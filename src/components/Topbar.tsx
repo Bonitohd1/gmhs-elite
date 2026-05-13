@@ -67,8 +67,13 @@ export default function Topbar({ profile }: { profile: any }) {
           <div className="flex items-center gap-2 flex-shrink-0">
             <span className="bg-orange-500 px-2 py-1 rounded-full text-xs font-bold">🔥 {profile?.streak || 0}</span>
             <button className="hidden sm:block hover:bg-white/15 w-9 h-9 rounded-lg" title="Thông báo">🔔</button>
-            <Link href="/profile" className="bg-white/20 hover:bg-white/30 w-9 h-9 rounded-full grid place-items-center text-xs font-bold flex-shrink-0">
-              {profile?.display_name?.split(" ").slice(-2).map((n: string) => n[0]).join("") || "?"}
+            <Link href="/profile" className="bg-white/20 hover:bg-white/30 w-9 h-9 rounded-full grid place-items-center text-xs font-bold flex-shrink-0 overflow-hidden">
+              {profile?.avatar_url ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src={profile.avatar_url} alt={profile.display_name} className="w-full h-full object-cover" />
+              ) : (
+                profile?.display_name?.split(" ").slice(-2).map((n: string) => n[0]).join("") || "?"
+              )}
             </Link>
             <span className="hidden md:inline text-sm font-semibold">{profile?.display_name}</span>
             <button onClick={logout} className="bg-white/20 hover:bg-white/30 px-2 py-1 rounded text-xs hidden sm:inline">Đăng xuất</button>
