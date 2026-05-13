@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase";
 
 const NAV_GROUPS = [
   {
@@ -46,6 +48,7 @@ const NAV_GROUPS = [
   },
   {
     title: "Quản trị",
+    adminOnly: true,
     items: [
       { href: "/admin", icon: "🔐", label: "Admin Dashboard" },
       { href: "/admin/feedback", icon: "🚩", label: "Question Feedback" },
@@ -55,10 +58,21 @@ const NAV_GROUPS = [
 
 export default function Sidebar({ mobileOpen, onClose }: { mobileOpen?: boolean; onClose?: () => void }) {
   const pathname = usePathname();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (!user) return;
+      supabase.from("profiles").select("is_admin").eq("id", user.id).single().then(({ data }) => {
+        setIsAdmin(!!data?.is_admin);
+      });
+    });
+  }, []);
 
   const navContent = (
     <nav className="p-3 space-y-4 overflow-y-auto h-full">
-      {NAV_GROUPS.map((group) => (
+      {NAV_GROUPS.filter((g: any) => !g.adminOnly || isAdmin).map((group) => (
         <div key={group.title}>
           <div className="text-[10px] uppercase tracking-wider font-bold text-slate-400 px-3 py-2">{group.title}</div>
           <div className="space-y-0.5">
