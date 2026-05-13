@@ -98,6 +98,11 @@ function LoginForm() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••"
             />
+            <div className="text-right mt-1">
+              <Link href="/auth/forgot-password" className="text-xs text-primary hover:underline">
+                Quên mật khẩu?
+              </Link>
+            </div>
           </div>
           {error && (
             <div className="text-sm text-red-700 bg-red-50 border border-red-200 p-3 rounded-lg">
