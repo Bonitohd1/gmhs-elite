@@ -48,6 +48,7 @@ const NAV_GROUPS = [
     title: "Quản trị",
     items: [
       { href: "/admin", icon: "🔐", label: "Admin Dashboard" },
+      { href: "/admin/feedback", icon: "🚩", label: "Question Feedback" },
     ],
   },
 ];

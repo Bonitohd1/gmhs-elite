@@ -8,6 +8,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import Topbar from "@/components/Topbar";
 import { CardSkeleton } from "@/components/Skeleton";
+import QuestionFlagButton from "@/components/QuestionFlagButton";
 
 interface Question {
   id: string;
@@ -246,11 +247,14 @@ export default function DailyPage() {
           </div>
 
           {showFeedback && (
-            <div className={`mt-4 p-4 rounded-lg ${selectedAnswer === q.correct_index ? "bg-green-50 border border-green-200" : "bg-red-50 border border-red-200"}`}>
-              <p className="text-sm">
-                <b>{selectedAnswer === q.correct_index ? "✓ Đúng!" : "✗ Chưa đúng."}</b> {q.explanation}
-              </p>
-            </div>
+            <>
+              <div className={`mt-4 p-4 rounded-lg ${selectedAnswer === q.correct_index ? "bg-green-50 border border-green-200" : "bg-red-50 border border-red-200"}`}>
+                <p className="text-sm">
+                  <b>{selectedAnswer === q.correct_index ? "✓ Đúng!" : "✗ Chưa đúng."}</b> {q.explanation}
+                </p>
+              </div>
+              <QuestionFlagButton questionId={q.id} />
+            </>
           )}
 
           {showFeedback && (
