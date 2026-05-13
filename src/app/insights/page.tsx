@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase-server";
 import Topbar from "@/components/Topbar";
+import EmptyState from "@/components/EmptyState";
 
 export const dynamic = 'force-dynamic';
 
@@ -37,6 +38,15 @@ export default async function InsightsPage() {
 
         <div className="card">
           <h3 className="font-bold text-lg mb-4">🔍 Pattern lỗi sai (AI nhận diện)</h3>
+          {total === 0 ? (
+            <EmptyState
+              icon="🎯"
+              title="Chưa có dữ liệu phân tích"
+              description="Sau khi bạn làm 1-2 Daily Challenge, AI sẽ tự động phát hiện các pattern lỗi sai và đề xuất chủ đề cần ôn lại."
+              actionLabel="Bắt đầu Daily Challenge"
+              actionHref="/daily"
+            />
+          ) : (
           <div className="space-y-3">
             {patterns.map((p) => {
               const color = p.severity === "high" ? "border-red-500" : p.severity === "medium" ? "border-amber-500" : "border-slate-400";
@@ -56,6 +66,7 @@ export default async function InsightsPage() {
               );
             })}
           </div>
+          )}
         </div>
 
         <div className="bg-primary-50 border-l-4 border-primary p-4 rounded-r-lg mt-6 text-sm text-slate-700">

@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import Topbar from "@/components/Topbar";
+import EmptyState from "@/components/EmptyState";
 
 const ACTIVITY_FEED = [
   { time: "5 phút trước", icon: "🏆", user: "Trần Văn Minh", action: "vừa hoàn thành Monthly Big-test với 92%" },
@@ -47,11 +48,13 @@ export default function BookmarksPage() {
           <div className="card">
             <h3 className="font-bold mb-4">⭐ Mục yêu thích ({total})</h3>
             {total === 0 ? (
-              <div className="text-center py-12 text-slate-500">
-                <div className="text-5xl mb-3">⭐</div>
-                <p>Chưa có mục yêu thích.</p>
-                <p className="text-xs mt-2">Click vào ⭐ trong các trang để thêm.</p>
-              </div>
+              <EmptyState
+                icon="⭐"
+                title="Chưa có mục yêu thích"
+                description="Khi bạn click vào ⭐ trong các trang câu hỏi, scenarios hay tài liệu, mục đó sẽ được lưu lại đây để ôn nhanh."
+                actionLabel="Khám phá Scenarios"
+                actionHref="/scenarios"
+              />
             ) : (
               <div className="space-y-2">
                 {bookmarks.docs.map((d) => <div key={d} className="bg-slate-50 p-3 rounded">📄 {d}</div>)}
