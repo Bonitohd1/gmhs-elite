@@ -185,7 +185,7 @@ export default function SignupPage() {
               onChange={(e) => setAgree(e.target.checked)}
               className="mt-1 w-4 h-4"
             />
-            <span>Tôi đồng ý điều khoản sử dụng. Dữ liệu chỉ dùng nội bộ khoa, không chia sẻ.</span>
+            <span>Tôi đồng ý <a href="/terms" target="_blank" className="text-primary underline">Điều khoản sử dụng</a> và <a href="/privacy" target="_blank" className="text-primary underline">Chính sách bảo mật</a> (NĐ 13/2023)</span>
           </label>
 
           {error && (
