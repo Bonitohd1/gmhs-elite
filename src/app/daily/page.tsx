@@ -103,6 +103,7 @@ export default function DailyPage() {
       if (user) {
         const xp = correctCount * 10 + (correctCount === 5 ? 20 : 0);
         const today = new Date().toISOString().split("T")[0];
+        // INSERT vào daily_completions - DB trigger sẽ tự update streak + total_xp
         await supabase.from("daily_completions").insert({
           user_id: user.id,
           completed_date: today,
@@ -110,12 +111,9 @@ export default function DailyPage() {
           questions_total: questions.length,
           xp_earned: xp,
         });
-        // Update profile XP and streak
-        await supabase.from("profiles").update({
-          total_xp: (profile.total_xp || 0) + xp,
-          streak: (profile.streak || 0) + 1,
-          last_active_date: today,
-        }).eq("id", user.id);
+        // Refetch profile để hiện streak + XP mới nhất sau khi trigger chạy
+        const { data: updated } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+        if (updated) setProfile(updated);
       }
       setDone(true);
     }
