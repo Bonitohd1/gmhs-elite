@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Topbar from "@/components/Topbar";
+import { ListSkeleton } from "@/components/Skeleton";
 import { createClient } from "@/lib/supabase";
 
 export const dynamic = 'force-dynamic';
@@ -38,7 +39,14 @@ export default function VinhDanhPage() {
     setLoading(false);
   }
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Đang tải...</div>;
+  if (loading) return (
+    <div className="min-h-screen">
+      <Topbar profile={null} />
+      <main className="lg:ml-60 p-4 sm:p-6 lg:p-8">
+        <ListSkeleton rows={10} />
+      </main>
+    </div>
+  );
 
   return (
     <div className="min-h-screen">

@@ -44,3 +44,9 @@ body.dark .bg-slate-100 { background: #475569 !important; }
 body.dark .text-slate-500, body.dark .text-slate-600 { color: #94A3B8 !important; }
 body.dark .text-slate-700 { color: #CBD5E1 !important; }
 body.dark .border-slate-200, body.dark .border-slate-300 { border-color: #475569 !important; }
+
+/* Skeleton shimmer animation */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

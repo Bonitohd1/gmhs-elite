@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import Topbar from "@/components/Topbar";
+import { CardSkeleton } from "@/components/Skeleton";
 
 function getWeekId(d = new Date()) {
   const date = new Date(d);
@@ -120,7 +121,15 @@ export default function WeeklyPage() {
     setThisWeekDone(true);
   }
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Đang tải...</div>;
+  if (loading) return (
+    <div className="min-h-screen">
+      <Topbar profile={null} />
+      <main className="lg:ml-60 p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto">
+        <CardSkeleton />
+        <div className="mt-4"><CardSkeleton /></div>
+      </main>
+    </div>
+  );
 
   if (thisWeekDone && !done) {
     return (

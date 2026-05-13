@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import Topbar from "@/components/Topbar";
+import { DashboardSkeleton } from "@/components/Skeleton";
 import AvatarUpload from "@/components/AvatarUpload";
 
 export default function ProfilePage() {
@@ -63,7 +64,14 @@ export default function ProfilePage() {
     a.click();
   }
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Đang tải...</div>;
+  if (loading) return (
+    <div className="min-h-screen">
+      <Topbar profile={null} />
+      <main className="lg:ml-60 p-4 sm:p-6 lg:p-8">
+        <DashboardSkeleton />
+      </main>
+    </div>
+  );
 
   return (
     <div className="min-h-screen">
