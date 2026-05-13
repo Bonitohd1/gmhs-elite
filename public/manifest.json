@@ -1,0 +1,27 @@
+{
+  "name": "GMHS Elite 2026",
+  "short_name": "GMHS Elite",
+  "description": "Ôn luyện chuyên môn ĐD Gây mê Hồi sức",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0EA5E9",
+  "orientation": "portrait-primary",
+  "lang": "vi",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["education", "medical", "productivity"]
+}
