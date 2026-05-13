@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import Sidebar from "./Sidebar";
+import EnergyBar from "./EnergyBar";
 
 export default function Topbar({ profile }: { profile: any }) {
   const router = useRouter();
@@ -105,7 +106,9 @@ export default function Topbar({ profile }: { profile: any }) {
 
           {/* Streak + Avatar — pushed to far right */}
           <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
-            <span className="bg-orange-500 px-2 py-1 rounded-full text-xs font-bold">🔥 {profile?.streak || 0}</span>
+            <span className="bg-orange-500 px-2 py-1 rounded-full text-xs font-bold whitespace-nowrap">🔥 {profile?.streak || 0}</span>
+            <span className="hidden md:inline-flex"><EnergyBar compact /></span>
+            <span className="bg-amber-500/90 px-2 py-1 rounded-full text-xs font-bold whitespace-nowrap" title="Coins">🪙 {profile?.coins || 0}</span>
             <div ref={notifRef} className="relative hidden sm:block">
               <button onClick={() => setNotifOpen(!notifOpen)} className="relative hover:bg-white/15 w-9 h-9 rounded-lg" title="Thông báo">
                 🔔

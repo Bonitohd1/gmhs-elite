@@ -76,13 +76,23 @@ export default function DailyPage() {
 
   async function handleAnswer(idx: number) {
     if (showFeedback) return;
+
+    // Tiêu 5 energy trước khi cho phép trả lời
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data: ok } = await supabase.rpc("consume_energy", { p_user_id: user.id, p_amount: 5 });
+      if (ok === false) {
+        alert("⚡ Hết năng lượng! Chờ hồi hoặc mua refill trong Shop (100 coins).");
+        return;
+      }
+    }
+
     setSelectedAnswer(idx);
     setShowFeedback(true);
     const isCorrect = idx === questions[currentIdx].correct_index;
     if (isCorrect) setCorrectCount(c => c + 1);
 
     // Log attempt
-    const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       await supabase.from("attempts").insert({
         user_id: user.id,

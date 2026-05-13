@@ -51,6 +51,7 @@ const NAV_GROUPS = [
     adminOnly: true,
     items: [
       { href: "/admin", icon: "🔐", label: "Admin Dashboard" },
+      { href: "/admin/analytics", icon: "📊", label: "Analytics khoa" },
       { href: "/admin/feedback", icon: "🚩", label: "Question Feedback" },
     ],
   },
