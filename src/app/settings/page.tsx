@@ -48,6 +48,28 @@ export default function SettingsPage() {
     alert(error ? "Lỗi: " + error.message : "✓ Đã đổi mật khẩu thành công");
   }
 
+  async function changeEmail() {
+    const { data: { user } } = await supabase.auth.getUser();
+    const current = user?.email || "(chưa có)";
+    const newEmail = prompt(`Email hiện tại: ${current}\n\nNhập email mới:`);
+    if (!newEmail || !newEmail.includes("@")) {
+      if (newEmail) alert("Email không hợp lệ");
+      return;
+    }
+    if (newEmail.trim().toLowerCase() === current.toLowerCase()) {
+      alert("Email mới trùng email cũ");
+      return;
+    }
+    const ok = confirm(`Đổi email từ "${current}" sang "${newEmail}"?\n\nSupabase sẽ gửi link xác nhận tới email mới. Bạn cần click vào link đó để hoàn tất.`);
+    if (!ok) return;
+    const { error } = await supabase.auth.updateUser({ email: newEmail.trim() });
+    if (error) {
+      alert("Lỗi: " + error.message);
+    } else {
+      alert(`✓ Đã gửi link xác nhận tới ${newEmail}.\nKiểm tra hộp thư (cả Spam) và bấm link để hoàn tất.`);
+    }
+  }
+
   function replayTour() {
     if (typeof window === "undefined") return;
     Object.keys(localStorage).filter(k => k.startsWith("gmhs_onboarded_")).forEach(k => localStorage.removeItem(k));

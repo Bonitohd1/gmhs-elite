@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
@@ -10,6 +10,49 @@ export default function Topbar({ profile }: { profile: any }) {
   const router = useRouter();
   const supabase = createClient();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifs, setNotifs] = useState<any[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const notifRef = useRef<HTMLDivElement>(null);
+
+  async function loadNotifs() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const { data } = await supabase.from("notifications")
+      .select("*").eq("user_id", user.id)
+      .order("created_at", { ascending: false }).limit(15);
+    setNotifs(data || []);
+    setUnreadCount((data || []).filter((n) => !n.is_read).length);
+  }
+
+  useEffect(() => {
+    loadNotifs();
+    const t = setInterval(loadNotifs, 30000); // refresh every 30s
+    return () => clearInterval(t);
+  }, []);
+
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setNotifOpen(false);
+      }
+    }
+    if (notifOpen) document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [notifOpen]);
+
+  async function markAllRead() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    await supabase.from("notifications").update({ is_read: true })
+      .eq("user_id", user.id).eq("is_read", false);
+    loadNotifs();
+  }
+
+  async function markRead(id: string) {
+    await supabase.from("notifications").update({ is_read: true }).eq("id", id);
+    loadNotifs();
+  }
 
   async function logout() {
     await supabase.auth.signOut();
