@@ -192,4 +192,11 @@ export default async function DashboardPage() {
               <div className="w-3 h-3 bg-green-300 rounded-sm"></div>
               <div className="w-3 h-3 bg-green-500 rounded-sm"></div>
               <div className="w-3 h-3 bg-green-700 rounded-sm"></div>
-              <sp
+              <span>Nhiều</span>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
